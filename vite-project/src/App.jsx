@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { useGeoData } from "./hooks/useGeoData";
 
-function App() {
-  const [count, setCount] = useState(0)
+import PropsDemo from "./pages/PropsDemo";
+import ContextDemo from "./pages/ContextDemo";
+import ZustandDemo from "./pages/ZustandDemo";
+
+export default function App() {
+  const { data, headers, isLoading, error } = useGeoData();
+  const [mode, setMode] = useState("props");
+
+  if (isLoading) return <p className="p-4">Loading data...</p>;
+
+  if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="h-screen flex flex-col">
+      <div className="p-4 border-b flex gap-4 justify-center bg-gray-100">
+        <button
+          onClick={() => setMode("props")}
+          className={`px-3 py-1 rounded ${
+            mode === "props" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Props
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
 
-export default App
+        <button
+          onClick={() => setMode("context")}
+          className={`px-3 py-1 rounded ${
+            mode === "context" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Context
+        </button>
+
+        <button
+          onClick={() => setMode("zustand")}
+          className={`px-3 py-1 rounded ${
+            mode === "zustand" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Zustand
+        </button>
+      </div>
+
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+        {mode === "props" && <PropsDemo data={data} headers={headers} />}
+        {mode === "context" && <ContextDemo data={data} headers={headers} />}
+        {mode === "zustand" && <ZustandDemo data={data} headers={headers} />}
+      </div>
+    </div>
+  );
+}
