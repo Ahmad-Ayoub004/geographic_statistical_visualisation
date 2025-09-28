@@ -1,5 +1,5 @@
-import chartPanel from "../components/chartPanel/chartPanel";
-import dataPanel from "../components/dataPanel/dataPanel";
+import ChartPanel from "../components/chartPanel/ChartPanel";
+import DataPanel from "../components/dataPanel/DataPanel";
 import { SelectionProvider, useSelection } from "../context/selectContext";
 
 function ContextWrapper({ data, headers }) {
@@ -7,14 +7,14 @@ function ContextWrapper({ data, headers }) {
 
   return (
     <>
-      <chartPanel
+      <ChartPanel
         data={data}
         headers={headers}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
       />
 
-      <dataPanel
+      <DataPanel
         data={data}
         headers={headers}
         selectedId={selectedId}

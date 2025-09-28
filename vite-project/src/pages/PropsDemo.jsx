@@ -1,6 +1,6 @@
 import { useState } from "react";
-import chartPanel from "../components/chartPanel/chartPanel";
-import dataPanel from "../components/dataPanel/dataPanel";
+import ChartPanel from "../components/chartPanel/ChartPanel";
+import DataPanel from "../components/dataPanel/DataPanel";
 
 export default function PropsDemo({ data, headers }) {
   const [selectedId, setSelectedId] = useState(null);
@@ -8,7 +8,7 @@ export default function PropsDemo({ data, headers }) {
   return (
     <>
       {/* Chart Panel for visualizing earthquakes (Scatterplot) */}
-      <chartPanel
+      <ChartPanel
         data={data}
         headers={headers}
         selectedId={selectedId}
@@ -16,7 +16,7 @@ export default function PropsDemo({ data, headers }) {
       />
 
       {/* Data Panel for viewing info (Table) */}
-      <dataPanel
+      <DataPanel
         data={data}
         headers={headers}
         selectedId={selectedId}

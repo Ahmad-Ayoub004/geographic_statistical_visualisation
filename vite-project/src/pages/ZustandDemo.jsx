@@ -1,5 +1,5 @@
-import chartPanel from "../components/chartPanel/chartPanel";
-import dataPanel from "../components/dataPanel/dataPanel";
+import ChartPanel from "../components/chartPanel/ChartPanel";
+import DataPanel from "../components/dataPanel/DataPanel";
 import { useSelectStore } from "../store/useSelectStore";
 
 export default function ZustandDemo({ data, headers }) {
@@ -8,14 +8,14 @@ export default function ZustandDemo({ data, headers }) {
 
   return (
     <>
-      <chartPanel
+      <ChartPanel
         data={data}
         headers={headers}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
       />
 
-      <dataPanel
+      <DataPanel
         data={data}
         headers={headers}
         selectedId={selectedId}
