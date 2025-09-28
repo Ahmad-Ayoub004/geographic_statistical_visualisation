@@ -26,6 +26,11 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
   const xKey = "mag";
   const yKey = "depth";
 
+  const sortedChartData = [...chartData].sort((a, b) => {
+    if (a[xKey] !== b[xKey]) return a[xKey] - b[xKey];
+    return a[yKey] - b[yKey];
+  });
+
   return (
     <div className="flex flex-col items-center">
       <h2 className="font-semibold mb-2">Earthquake Chart</h2>
@@ -68,7 +73,7 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
         <Tooltip cursor={{ strokeDasharray: "3 3" }} />
 
         <Scatter
-          data={chartData}
+          data={sortedChartData}
           shape={(props) => {
             const { cx, cy, payload } = props;
             const isSelected = payload.id === selectedId;
