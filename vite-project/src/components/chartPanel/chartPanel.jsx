@@ -9,9 +9,13 @@ import {
   ZAxis,
 } from "recharts";
 
-export default function chartPanel({ data, selectedId, setSelectedId }) {
+export default function ChartPanel({ data, selectedId, setSelectedId }) {
   const [minMag, setMinMag] = useState(3);
   const [focusMode, setFocusMode] = useState(false);
+
+  const numericFields = ["mag", "depth", "latitude", "longitude"];
+  const [xKey, setXKey] = useState("mag");
+  const [yKey, setYKey] = useState("depth");
 
   const filtered = data.filter((d) => d.mag >= minMag);
 
@@ -23,9 +27,7 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
       : []
     : filtered;
 
-  const xKey = "mag";
-  const yKey = "depth";
-
+  // Sort chartData by X, then by Y (so points appear ordered)
   const sortedChartData = [...chartData].sort((a, b) => {
     if (a[xKey] !== b[xKey]) return a[xKey] - b[xKey];
     return a[yKey] - b[yKey];
@@ -35,7 +37,7 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
     <div className="flex flex-col items-center">
       <h2 className="font-semibold mb-2">Earthquake Chart</h2>
 
-      <div className="flex gap-4 mb-2">
+      <div className="flex flex-wrap gap-4 mb-2 items-center">
         <label>
           Min Magnitude:{" "}
           <select
@@ -51,13 +53,34 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
           </select>
         </label>
 
-        <label>
+        <label className="flex items-center gap-1">
           <input
             type="checkbox"
             checked={focusMode}
             onChange={() => setFocusMode(!focusMode)}
           />
           Focus Mode
+        </label>
+
+        <label>
+          X-Axis:{" "}
+          <select value={xKey} onChange={(e) => setXKey(e.target.value)}>
+            {numericFields.map((field) => (
+              <option key={field} value={field}>
+                {field}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Y-Axis:{" "}
+          <select value={yKey} onChange={(e) => setYKey(e.target.value)}>
+            {numericFields.map((field) => (
+              <option key={field} value={field}>
+                {field}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
@@ -89,7 +112,6 @@ export default function chartPanel({ data, selectedId, setSelectedId }) {
           }}
         />
 
-        {/*if not in chartData, still render selected point */}
         {!focusMode && selectedPoint && !filtered.includes(selectedPoint) && (
           <Scatter
             data={[selectedPoint]}
